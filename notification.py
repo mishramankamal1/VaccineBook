@@ -32,7 +32,7 @@ def send_whatsapp_message(center_name, date_available):
     phone_number = param.number_list
     for number in phone_number:
         client.messages.create(
-            from_='whatsapp:+14155238886',
+            from_=f'whatsapp:{param.twilo_number}',
             body=f'Vaccine is available at {center_name} on {date_available}',
             to=f'whatsapp:{number}')
         print(f"WhatsApp notification send to {number}")
