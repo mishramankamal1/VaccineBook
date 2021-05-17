@@ -10,12 +10,13 @@ import time
 url_dist_code = '64'
 actual = datetime.today()
 list_format = [actual + timedelta(days=i) for i in range(param.num_days)]
-#actual_dates = [i.strftime("%d-%m-%Y") for i in list_format]
-actual_dates = ['18-05-2021']
+actual_dates = [i.strftime("%d-%m-%Y") for i in list_format]
+# actual_dates = ['18-05-2021']
 vaccine_center = []
 
 
 def run_vaccine():
+    counter = 0
     for pinCode in param.pinCodes:
         for given_date in actual_dates:
             url = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id={}&date={}'.format(
@@ -34,10 +35,13 @@ def run_vaccine():
                             [centers["name"], centers['address'], centers['block_name'], session['vaccine'],
                              session['date'], session['min_age_limit'], session["available_capacity"]])
 
-                return True
-            else:
-                return False
+                        counter = counter + 1
 
+    if counter > 0:
+        print(vaccine_center)
+        return True
+    else:
+        return False
 
 
 while True:
@@ -47,13 +51,13 @@ while True:
         column_name = ['Center_Name', 'Address', 'Block', 'Vaccine_Name', 'Date', 'Age', 'Capacity']
         vaccine_df = pd.DataFrame(vaccine_center, columns=column_name)
         mask = ((vaccine_df.Age == param.age) & (vaccine_df.Capacity > 0))
-        #vaccine_df = vaccine_df[(vaccine_df['Age'] == param.age) & (vaccine_df['Capacity'] > 0)]
+        # vaccine_df = vaccine_df[(vaccine_df['Age'] == param.age) & (vaccine_df['Capacity'] > 0)]
         vaccine_df = vaccine_df.loc[mask, :]
         whatsapp_center = ', '.join(str(e) for e in vaccine_df['Center_Name'])
         if len(vaccine_df) > 0:
             print("notifications")
             notification.mail_send(vaccine_df)
-            #notification.send_whatsapp_message(whatsapp_center, vaccine_df.Date.unique())
+            # notification.send_whatsapp_message(whatsapp_center, vaccine_df.Date.unique())
     else:
         print("No Vaccine found")
 
