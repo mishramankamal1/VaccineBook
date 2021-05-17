@@ -56,7 +56,7 @@ while True:
         if len(vaccine_df) > 0:
             print("notifications")
             notification.mail_send(vaccine_df)
-            # notification.send_whatsapp_message(whatsapp_center, vaccine_df.Date.unique())
+            notification.send_whatsapp_message(whatsapp_center, vaccine_df.Date.unique())
     else:
         print("No Vaccine found")
 
