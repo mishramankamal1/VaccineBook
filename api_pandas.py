@@ -10,8 +10,8 @@ import time
 url_dist_code = '64'
 actual = datetime.today()
 list_format = [actual + timedelta(days=i) for i in range(param.num_days)]
-#actual_dates = [i.strftime("%d-%m-%Y") for i in list_format]
-actual_dates = ['18-05-2021']
+actual_dates = [i.strftime("%d-%m-%Y") for i in list_format]
+#actual_dates = ['18-05-2021']
 vaccine_center = []
 
 
@@ -53,7 +53,7 @@ while True:
         if len(vaccine_df) > 0:
             print("notifications")
             notification.mail_send(vaccine_df)
-            #notification.send_whatsapp_message(whatsapp_center, vaccine_df.Date.unique())
+            notification.send_whatsapp_message(whatsapp_center, vaccine_df.Date.unique())
     else:
         print("No Vaccine found")
 
